@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Datadog RUM Demo - Performance</title>
+
+  <!-- Datadog RUM -->
+  <script src="https://www.datadoghq-browser-agent.com/us1/v6/datadog-rum.js" crossorigin="anonymous"></script>
+  <script>
+    window.DD_RUM && window.DD_RUM.init({
+      clientToken: 'pub3a9242d3cff288df4f25082fefa8e4e7',
+      applicationId: '93b458ba-4215-49d4-89cd-41f946ce2c1d',
+      site: 'datadoghq.com',
+      service: 'rum-test-site',
+      env: 'uat',
+      sessionSampleRate: 100,
+      sessionReplaySampleRate: 100,
+      trackUserInteractions: true,
+      trackResources: true,
+      trackLongTasks: true,
+      defaultPrivacyLevel: 'allow'
+    });
+    window.DD_RUM && window.DD_RUM.startSessionReplayRecording();
+  </script>
+
+  <style>
+    body { font-family: Arial, sans-serif; margin: 20px; }
+    nav a { margin-right: 10px; text-decoration: none; color: blue; }
+    .card { border: 1px solid #ddd; padding: 15px; margin: 10px 0; }
+  </style>
+</head>
+<body>
+  <h1>Performance Page</h1>
+
+  <nav>
+    <a href="index.html">Home</a>
+    <a href="profile.html">Profile</a>
+    <a href="performance.html">Performance</a>
+    <a href="errors.html">Errors</a>
+  </nav>
+
+  <div class="card">
+    <button onclick="simulateApiCall()">Simulate API Call</button>
+    <button onclick="simulateLongTask()">Simulate Long Task</button>
+  </div>
+
+  <script>
+    function simulateApiCall() {
+      fetch('https://jsonplaceholder.typicode.com/posts/1')
+        .then(res => res.json())
+        .then(() => alert('API call completed'));
+    }
+
+    function simulateLongTask() {
+      const start = Date.now();
+      while (Date.now() - start < 3000) {} // block main thread
+      alert('Long task finished');
+    }
+  </script>
+</body>
+</html>
