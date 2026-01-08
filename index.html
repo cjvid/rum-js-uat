@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <title>Datadog RUM Demo - Home</title>
+  <title>Datadog RUM Demo - Login</title>
 
   <!-- Datadog RUM -->
   <script src="https://www.datadoghq-browser-agent.com/us1/v6/datadog-rum.js" crossorigin="anonymous"></script>
@@ -22,89 +22,62 @@
       version: '1.0.0'
     });
 
-    window.DD_RUM && window.DD_RUM.setUser({
-    id: '1234',
-    name: 'John Doe',
-    email: 'john@doe.com',
-    plan: 'premium',
-    ...
-})
-
-    window.DD_RUM && window.DD_RUM.getUser()
-
+    // Start session replay recording immediately
     window.DD_RUM && window.DD_RUM.startSessionReplayRecording();
   </script>
 
-  <!-- External CSS -->
   <link rel="stylesheet" href="styles.css" />
+  <style>
+    body { font-family: sans-serif; padding: 2rem; }
+    .login-container { max-width: 400px; margin: auto; border: 1px solid #ccc; padding: 2rem; border-radius: 8px; }
+    input { width: 100%; padding: 0.5rem; margin-bottom: 1rem; }
+    button { padding: 0.5rem 1rem; }
+  </style>
 </head>
 <body>
 
-  <header class="header">
-    <h1>Datadog RUM Demo</h1>
-    <p>Interactive test site for RUM</p>
-  </header>
+  <div class="login-container">
+    <h2>Login for RUM Test</h2>
 
-  <!-- Navigation -->
-  <nav class="nav">
-    <a href="index.html" class="active">Home</a>
-    <a href="profile.html">Profile</a>
-    <a href="performance.html">Performance</a>
-    <a href="errors.html">Errors</a>
-  </nav>
+    <input type="text" id="username" placeholder="Enter username" />
+    <input type="email" id="email" placeholder="Enter email" />
+    <select id="plan">
+      <option value="free">Free</option>
+      <option value="premium">Premium</option>
+      <option value="enterprise">Enterprise</option>
+    </select>
+    <br/>
+    <button onclick="loginUser()">Login</button>
 
-  <!-- CTA Card -->
-  <section class="card">
-    <h2>Primary Action</h2>
-    <button class="btn-primary" onclick="handleClick()">Click Me</button>
-    <p id="click-result"></p>
-  </section>
-
-  <!-- Form Interaction -->
-  <section class="card">
-    <h2>User Input</h2>
-    <input type="text" placeholder="Type something..." id="userInput" />
-    <button class="btn-secondary" onclick="submitInput()">Submit</button>
-  </section>
-
-  <!-- Toggle Section -->
-  <section class="card">
-    <h2>Toggle Content</h2>
-    <button class="btn-outline" onclick="toggleBox()">Show / Hide</button>
-    <div id="toggleBox" class="hidden-box">
-      <p>This content is toggled (good for RUM interaction tracking).</p>
-    </div>
-  </section>
-
-  <!-- Simulated Loading -->
-  <section class="card">
-    <h2>Simulate Loading</h2>
-    <button class="btn-warning" onclick="simulateLoad()">Start Loading</button>
-    <div id="loader" class="loader hidden"></div>
-  </section>
-
-  <footer class="footer">
-    <p>Datadog RUM Test Site © 2026</p>
-  </footer>
+    <p id="status"></p>
+  </div>
 
   <script>
-    function handleClick() {
-      document.getElementById("click-result").innerText = "Button clicked!";
-    }
+    function loginUser() {
+      const username = document.getElementById("username").value;
+      const email = document.getElementById("email").value;
+      const plan = document.getElementById("plan").value;
 
-    function submitInput() {
-      const value = document.getElementById("userInput").value;
-      alert("You entered: " + value);
-    }
+      if (!username || !email) {
+        alert("Please fill out all fields");
+        return;
+      }
 
-    function toggleBox() {
-      document.getElementById("toggleBox").classList.toggle("show");
-    }
+      // Simulate a user ID (in real app, use backend auth ID)
+      const userId = 'user-' + Math.floor(Math.random() * 100000);
 
-    function simulateLoad() {
-      const loader = document.getElementById("loader");
-      loader.classList.remove("hidden");
-      setTimeout(() => loader.classList.add("hidden"), 2000);
+      // Set user in Datadog RUM
+      window.DD_RUM && window.DD_RUM.setUser({
+        id: userId,
+        name: username,
+        email: email,
+        plan: plan
+      });
+
+      document.getElementById("status").innerText = 
+        `User "${username}" logged in for RUM testing.`;
+      
+      console.log("RUM user set:", { id: userId, name: username, email, plan });
     }
   </script>
 
