@@ -23,25 +23,78 @@
     window.DD_RUM && window.DD_RUM.startSessionReplayRecording();
   </script>
 
-  <style>
-    body { font-family: Arial, sans-serif; margin: 20px; }
-    nav a { margin-right: 10px; text-decoration: none; color: blue; }
-    .card { border: 1px solid #ddd; padding: 15px; margin: 10px 0; }
-  </style>
+  <!-- External CSS -->
+  <link rel="stylesheet" href="styles.css" />
 </head>
 <body>
-  <h1>Datadog RUM Demo - Home</h1>
+
+  <header class="header">
+    <h1>Datadog RUM Demo</h1>
+    <p>Interactive test site for RUM, Replay & UX monitoring</p>
+  </header>
 
   <!-- Navigation -->
-  <nav>
-    <a href="index.html">Home</a>
+  <nav class="nav">
+    <a href="index.html" class="active">Home</a>
     <a href="profile.html">Profile</a>
     <a href="performance.html">Performance</a>
     <a href="errors.html">Errors</a>
   </nav>
 
-  <div class="card">
-    <button onclick="alert('Home CTA clicked')">Click Me</button>
-  </div>
+  <!-- CTA Card -->
+  <section class="card">
+    <h2>Primary Action</h2>
+    <button class="btn-primary" onclick="handleClick()">Click Me</button>
+    <p id="click-result"></p>
+  </section>
+
+  <!-- Form Interaction -->
+  <section class="card">
+    <h2>User Input</h2>
+    <input type="text" placeholder="Type something..." id="userInput" />
+    <button class="btn-secondary" onclick="submitInput()">Submit</button>
+  </section>
+
+  <!-- Toggle Section -->
+  <section class="card">
+    <h2>Toggle Content</h2>
+    <button class="btn-outline" onclick="toggleBox()">Show / Hide</button>
+    <div id="toggleBox" class="hidden-box">
+      <p>This content is toggled (good for RUM interaction tracking).</p>
+    </div>
+  </section>
+
+  <!-- Simulated Loading -->
+  <section class="card">
+    <h2>Simulate Loading</h2>
+    <button class="btn-warning" onclick="simulateLoad()">Start Loading</button>
+    <div id="loader" class="loader hidden"></div>
+  </section>
+
+  <footer class="footer">
+    <p>Datadog RUM Test Site © 2026</p>
+  </footer>
+
+  <script>
+    function handleClick() {
+      document.getElementById("click-result").innerText = "Button clicked!";
+    }
+
+    function submitInput() {
+      const value = document.getElementById("userInput").value;
+      alert("You entered: " + value);
+    }
+
+    function toggleBox() {
+      document.getElementById("toggleBox").classList.toggle("show");
+    }
+
+    function simulateLoad() {
+      const loader = document.getElementById("loader");
+      loader.classList.remove("hidden");
+      setTimeout(() => loader.classList.add("hidden"), 2000);
+    }
+  </script>
+
 </body>
 </html>
